@@ -1,0 +1,173 @@
+<html>
+<head>
+    {% load static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+   <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      
+       
+</head>
+   
+<body>
+    <div class="container">
+        <nav class="red darken-3">
+            <div class="nav-wrapper">
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li><a href="/incomes">Incomes</a></li>
+                <li class="active"><a href="/outcomes">Outcomes</a></li>
+                <li><a href="/transfers">Transfers</a></li>
+                <li><a href="/budgets">Budgets</a></li>
+              </ul>
+            </div>
+          </nav>
+        <div class="row">       
+            <div class="col s4 section"><h4>Outcome</h4></div>
+            <div class="col s1 offset-s7"><h4><a class="waves-effect waves-light red btn modal-trigger" href="#modal1">ADD</a></h4>
+            </div>    
+        </div>
+
+        <div class="row">
+                <ul class="tabs red darken-3" >
+                  {% for month in months %}
+                  <li class="tab col s1"><a href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                  {%endfor%}
+                </ul>
+                
+            {% for start,end,table,total,circles,seriesline in tables %}
+
+              <div id="menu{{forloop.counter}}" class="col s12">
+                    <br><div class="row" style="padding-bottom:3%">
+                        <div class="col s1 red darken-4 " style="color: rgba(255, 255, 255, 0.9);">Inicio</div>
+                        <div class="col s3">{{start}}</div>
+                        <div class="col s1 red darken-4 " style="color: rgba(255, 255, 255, 0.9);">Fin</div>
+                        <div class="col s3">{{end}}</div>
+                        <div class="col s1 red darken-4" style="color: rgba(255, 255, 255, 0.9);">Hoy</div>
+                        <div class="col s3">{{today|date:"d \d\e F \d\e Y"}}</div>
+                    </div>
+                    <div class="row">
+                        <div id="circle{{forloop.counter}}" class="col s6"></div>
+                        <div id="line{{forloop.counter}}" class="col s6"></div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                                <table class="highlight">
+                                    <tr>
+                                        <th> Nombre </th>
+                                        <th> Fecha </th>
+                                        <th> Tipo </th>
+                                        <th> Monto </th>
+                                        <th> Cuenta </th>
+                                    </tr>
+                                    {%for values in table%}
+                                        <tr>
+                                            <td> {{values.description}}</td>
+                                            <td> {{values.date|date:"d-m-Y"}}</td>
+                                            <td style="text-align:center"> {{values.category.name}}</td>
+                                            <td> {{values.amount}} €</td>
+                                            <td style="text-align:center"> {{values.account.id}} </td>
+                                        </tr>
+                                    {%endfor%}
+                                </table>
+                                <div class="info col s6 offset-3">Gastos: {{total}} €</div>
+                            </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <script>
+                        var pieColors = (function () {
+                            var colors = [],base = '#b50000',i;
+                            for (i = 0; i < 25; i += 1) {colors.push(Highcharts.Color(base).brighten((i - 5) / 25).get());}
+                            return colors;}()); 
+                        var colors = pieColors,
+                        categories = [{%for c in categories %}"{{c.name}}",{%endfor%}],
+                        data = [{% for circle in circles %}{"y": {{circle.0}},"color": colors[{{forloop.counter}}],
+                                    "drilldown": {"name": "{{circle.1}}",
+                                        "categories":[{% for c in circle.2 %}"{{c}}",{% endfor %}],
+                                        "data": [{% for c in circle.3 %}{{c}},{% endfor %}],}},{% endfor %}],
+                        browserData = [],versionsData = [],i,j,dataLen = data.length,drillDataLen,brightness;
+                        for (i = 0; i < dataLen; i += 1) {browserData.push({name: categories[i],y: data[i].y,color: data[i].color});
+                        drillDataLen = data[i].drilldown.data.length;
+                        for (j = 0; j < drillDataLen; j += 1) {brightness = 0.2 - (j / drillDataLen) / 5;
+                            versionsData.push({name: data[i].drilldown.categories[j],y: data[i].drilldown.data[j],color: Highcharts.Color(data[i].color).brighten(brightness).get()});}}
+                        Highcharts.chart('circle{{forloop.counter}}', {
+                        chart: {type: 'pie'},title: {text: ''},subtitle: {text: ''},yAxis: {title: {text: ''}},
+                        plotOptions: {pie: {shadow: false,center: ['50%', '50%']}},tooltip: {valueSuffix: '%'},
+                        series: [{name: 'Total',data: browserData,size: '60%',dataLabels: {
+                            formatter: function () {return this.y > 5 ? this.point.name : null;},color: '#ffffff',distance: -30}
+                        }, {name: 'SubTotal',data: versionsData,size: '95%',innerSize: '70%',dataLabels: {
+                            formatter: function () {return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +this.y + '%' : null;}},id: 'versions'}],
+                        responsive: {rules: [{condition: {maxWidth: 400},
+                            chartOptions: {series: [{id: 'versions',dataLabels: {enabled: false}}]}}]}});
+                    </script>
+                    <script>
+                            Highcharts.chart('line{{forloop.counter}}', {
+                                chart: {
+                                  type: 'areaspline'
+                                },
+                                title: {
+                                  text: ''
+                                },
+                                legend: {
+                                  layout: 'vertical',
+                                  align: 'left',
+                                  verticalAlign: 'top',
+                                  x: 150,
+                                  y: 100,
+                                  floating: true,
+                                  borderWidth: 1,
+                                  backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                                },
+                                xAxis: {
+                                  categories: [{%for day in days%}'{{day}}',{%endfor%}],
+                                },
+                                yAxis: {
+                                  title: {
+                                    text: ''
+                                  }
+                                },
+                                tooltip: {
+                                  shared: true,
+                                  valueSuffix: ' €'
+                                },
+                                credits: {
+                                  enabled: false
+                                },
+                                plotOptions: {
+                                  areaspline: {
+                                    fillOpacity: 0.3
+                                  }
+                                },
+                                colors: ['#b50000','#660000','#2f0000'],
+                                series: [
+                                    {% for line in seriesline %}{
+                                  name: "{{line.0}}",
+                                  data: [{%for i in line.1%}{{i}},{%endfor%}]
+                                },{%endfor%}]
+                              });
+                    </script>
+              </div>
+            {%endfor%}
+           
+        </div>
+    </div>
+          
+    
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+  $(document).ready(function(){
+    $('.tabs').tabs();
+  });
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>
+
+</body>
+</html>

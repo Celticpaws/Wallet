@@ -1,0 +1,55 @@
+.accountstable{
+    width:50%; 
+    border-collapse:collapse;
+    border: 1px solid white; 
+    font: normal 16px Verdana, Arial, Helvetica;
+}
+.accountstable td{ 
+    padding:7px; text-align:right;
+    border: 1px solid white; 
+}
+/* improve visual readability for IE8 and below */
+.accountstable tr{
+    background: #b8d1f3;
+}
+.accountstable tr th{
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-right:1px solid white;
+    padding: 1%;
+}
+.accountstable tr th:nth-child(1){ 
+    background: #00004c;
+}
+.accountstable tr th:nth-child(2){ 
+    background: #46b8bc;color:white;
+}
+.accountstable tr th:nth-child(3){ 
+    background: #00004c;
+}
+.accountstable tr th:nth-child(4){ 
+    background: #386900;
+}
+.accountstable tr th:nth-child(5){ 
+    background: #cc5c00;
+}
+.accountstable tr td:nth-child(2){
+    background: #a2dbdd;
+}
+.accountstable tr td:nth-child(3){
+    background: #9999b7;
+}
+.accountstable tr td:nth-child(4){
+    background: #87a566;
+}
+.accountstable tr td:nth-child(5){
+    background: #ff8f32;
+}
+.accountstable tr:last-child td{
+    background: black; color:white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-right:1px solid white;
+    padding: 1%;font-weight: bold;
+}

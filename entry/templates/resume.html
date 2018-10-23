@@ -1,0 +1,125 @@
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-green.css' %}">
+    
+</head>
+   
+<body>
+    <div class="container">
+            <h2>Resume</h2>
+            
+            <ul class="nav nav-tabs">
+              {% for month in months %}
+              <li><a data-toggle="tab" href="#menu{{forloop.counter}}">{{month}}</a></li>
+              {%endfor%}
+            </ul>
+            <br>
+            <div class="tab-content">      
+            {% for start,end,table,total,income,outcome in tables %}
+
+              <div id="menu{{forloop.counter}}" class="tab-pane fade">
+                    <div class="col-lg-12">
+                        <div class="info col-sm-1">Inicio</div>
+                        <div class="info2 col-sm-3">{{start}}</div>
+                        <div class="info col-sm-1">Fin</div>
+
+                        <div class="info2 col-sm-3">{{end}}</div>
+                        <div class="info col-sm-1">Hoy</div>
+                        <div class="info2 col-sm-3">{{today|date:"d \d\e F \d\e Y"}}</div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="col-sm-6">
+                            <table class="accountstable">
+                                <tr>
+                                    <th style="background:white"></th>
+                                    {%for account in accounts%}
+                                        <th> {{account.id}} </th>
+                                    {%endfor%}
+                                </tr>
+                                {%for values in table%}
+                                    <tr>
+                                        {%for v in values%}
+                                            <td> {{v}} €</td>
+                                        {%endfor%}
+                                    </tr>
+                                {%endfor%}
+                            </table>
+                            <div class="info col-sm-6 col-sm-offset-3">Balance: {{total}} €</div>
+                        </div>
+                    <div id="graph{{forloop.counter}}" class="col-sm-6">
+                    </div>
+                    </div>
+                    <div class="col-lg-12">
+                    </div>
+                    <script>
+                            var pieColors = (function () {
+                                var colors = [],
+                                  base = '#439889',
+                                  i;
+                                for (i = 0; i < 10; i += 1) {
+                                  colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+                                }
+                                return colors;
+                              }());
+                              
+                              // Build the chart
+                              Highcharts.chart('graph{{forloop.counter}}', {
+                                chart: {
+                                  plotBackgroundColor: null,
+                                  plotBorderWidth: 0,
+                                  plotShadow: false
+                                },
+                                title: {
+                                  text: 'Balance',
+                                  align: 'center',
+                                  verticalAlign: 'middle',
+                                  y: 40
+                                },
+                                tooltip: {
+                                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                },
+                                plotOptions: {
+                                  pie: {
+                                    colors: pieColors,
+                                    dataLabels: {
+                                      enabled: true,
+                                      distance: -50,
+                                      style: {
+                                        fontWeight: 'bold',
+                                        color: 'white'
+                                      }
+                                    },
+                                    startAngle: -90,
+                                    endAngle: 90,
+                                    center: ['50%', '75%'],
+                                    size: '110%'
+                                  }
+                                },
+                                series: [{
+                                  type: 'pie',
+                                  name: 'Percentage',
+                                  innerSize: '50%',
+                                  data: [
+                                    ['Income', {{income}}],
+                                    ['Outcome',{{outcome}}],
+                                  ]
+                                }]
+                              });
+                    </script>
+              </div>
+            {%endfor%}
+            </div>
+        </div>
+          
+
+    
+
+
+</body>
+</html>

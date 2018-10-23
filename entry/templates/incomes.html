@@ -1,0 +1,80 @@
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-green.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+       
+</head>
+   
+<body>
+    <div class="container">
+        <nav class="teal darken-3">
+            <div class="nav-wrapper">
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="/incomes">Incomes</a></li>
+                <li><a href="/outcomes">Outcomes</a></li>
+                <li><a href="/transfers">Transfers</a></li>
+                <li><a href="/budgets">Budgets</a></li>
+              </ul>
+            </div>
+          </nav>
+        <div class="col-lg-12">       
+        <div class="col-sm-6"><h2>Income</h2></div>
+        <div class="col-sm-1 col-sm-offset-5" style="padding-top: 3%;"><a class="btn-floating btn-large waves-effect waves-light dark-green"><i class="material-icons">+</i></a></div>
+        </div>    
+            <ul class="nav nav-tabs">
+            </ul>
+            <br>
+            <div class="tab-content">      
+              <div id="menu{{forloop.counter}}" class="tab-pane active">
+                    <div class="col-lg-12" style="padding-bottom:3%">
+                        <div class="info col-sm-1">Inicio</div>
+                        <div class="info2 col-sm-3">{{tables.0}}</div>
+                        <div class="info col-sm-1">Fin</div>
+
+                        <div class="info2 col-sm-3">{{tables.1}}</div>
+                        <div class="info col-sm-1">Hoy</div>
+                        <div class="info2 col-sm-3">{{today|date:"d \d\e F \d\e Y"}}</div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="col-sm-12">
+                                <table class="accountstable">
+                                    <tr>
+                                        <th> Nombre </th>
+                                        <th> Fecha </th>
+                                        <th> Cuenta </th>
+                                        <th> Monto </th>
+                                        <th> Pagado </th>
+                                    </tr>
+                                    {%for values in tables.2%}
+                                        <tr>
+                                            <td> {{values.description}}</td>
+                                            <td> {{values.date|date:"d-m-Y"}}</td>
+                                            <td style="text-align:center"> {{values.category.name}}</td>
+                                            <td> {{values.amount}} €</td>
+                                            <td style="text-align:center"> {{values.account.id}} </td>
+                                        </tr>
+                                    {%endfor%}
+                                </table>
+                                <div class="info col-sm-6 col-sm-offset-3">Ingreso Anual: {{tables.3}} €</div>
+                            </div>
+                    </div>
+                    <div class="col-lg-12">
+                    </div>
+              </div>
+            </div>
+        </div>
+          
+
+    
+
+
+</body>
+</html>

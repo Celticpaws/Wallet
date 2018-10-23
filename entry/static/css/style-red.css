@@ -1,0 +1,107 @@
+.accountstable{
+    margin-top:5%;
+    width:100%; 
+    border-collapse:collapse;
+    border: 1px solid white; 
+    font: normal 16px Verdana, Arial, Helvetica;
+}
+.accountstable td{ 
+    padding:7px; text-align:right;
+    border: 1px solid white; 
+}
+/* improve visual readability for IE8 and below */
+.accountstable tr{
+    background: #b8d1f3;
+    color:white;
+}
+.accountstable tr th{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-right:1px solid white;
+    padding: 1%;
+    text-align: center;
+}
+.accountstable tr:nth-child(odd) th{ 
+    background: #990000;
+}
+.accountstable tr:nth-child(even) th{ 
+    background: #cc0000;
+}
+.accountstable tr:nth-child(odd) td{
+    background: #ff6666;
+}
+.accountstable tr:nth-child(even) td{
+    background: #ff3333;
+}
+.accountstable tr:last-child td{
+    background: #660000;
+    border-right:1px solid white;
+    padding: 1%;
+    font-weight: bold;
+}
+.accountstable tr:last-child td:first-child{
+    border-bottom-left-radius: 10px;
+}
+.accountstable tr:last-child td:last-child{
+    border-bottom-right-radius: 10px;
+}
+.accountstable tr:nth-child(2) td:first-child{
+    border-top-left-radius: 10px;
+}
+
+.info{
+    background: #660000;
+    border-radius: 20px;
+    padding:1%;
+    font-weight:bold;
+    color:white;
+    text-align:center;
+    widht:100%;
+    margin-top:1%;
+}
+
+.info2{
+    background: #ff3333;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius:20px;
+    margin-left: -3%;
+    margin-right:2%;
+    margin-top:1%;
+    padding:1%;
+    z-index: -1;
+    text-align: right;
+    color:white;
+}
+.nav-tabs {
+    border: 1px solid #660000;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+
+.nav-tabs li {
+    float: left;
+    margin-bottom: -1px;
+    width: 8.3%;
+    text-align: center;
+}
+
+.nav-tabs li a{
+    color:#660000;
+    border-radius:20px;
+}
+
+.nav-tabs li a:hover {
+    border-color: #660000;
+    background: #660000;
+    color:white;
+    border-radius:20px;
+}
+
+.nav-tabs li.active a, .nav-tabs li.active a:focus, .nav-tabs li.active a:hover {
+    color: white;
+    border-radius:20px;
+    cursor: default;
+    background-color: #660000;
+    border: 1px solid #660000;
+    border-bottom-color: transparent;
+}
