@@ -25,7 +25,7 @@ SECRET_KEY = 'dx+j3z0es%4r!1f*g5sce4!25+8q08ia4sh2gvwdg%xxp4+!qw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', ' . pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'celticpaws.pythonanywhere.com']
 
 
 # Application definition
