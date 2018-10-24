@@ -54,9 +54,9 @@ def outcomes_resume(request):
         circle = category_graph(start_date,end_date,total)
         incomes = total_month_income(start_date,end_date)
         line = timeline_graph(start_date,r[1],incomes)
-        print(line)
+        thismonth = today.month
         tables.append([start_date,end_date,values,round(total,2),circle,line]) 
-    return render(request, 'outcomes.html', {'today':today, 'tables':tables,'months':months,'categories':categories,'days':days})
+    return render(request, 'outcomes.html', {'today':today, 'thismonth':thismonth, 'tables':tables,'months':months,'categories':categories,'days':days})
 
 def outcome_add(request):
     return render(request, 'add-outcome.html', {})

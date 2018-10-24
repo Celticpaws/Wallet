@@ -8,7 +8,7 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
        
 </head>
    
@@ -16,6 +16,7 @@
     <div class="container">
         <nav class="red darken-3">
             <div class="nav-wrapper">
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/">Home</a></li>
                 <li><a href="/incomes">Incomes</a></li>
@@ -25,16 +26,27 @@
               </ul>
             </div>
           </nav>
+          <ul class="sidenav" id="mobile-demo">
+              <li><a href="/">Home</a></li>
+                  <li><a href="/incomes">Incomes</a></li>
+                  <li class="active"><a href="/outcomes">Outcomes</a></li>
+                  <li><a href="/transfers">Transfers</a></li>
+                  <li><a href="/budgets">Budgets</a></li>
+            </ul>
+
         <div class="row">       
-            <div class="col s4 section"><h4>Outcome</h4></div>
+            <div class="col s4 section"><h4>Outcome {{thismonth}}</h4></div>
             <div class="col s1 offset-s7"><h4><a class="waves-effect waves-light red btn modal-trigger" href="#modal1">ADD</a></h4>
             </div>    
         </div>
-
         <div class="row">
                 <ul class="tabs red darken-3" >
                   {% for month in months %}
-                  <li class="tab col s1"><a href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {%if forloop.counter == thismonth %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" class="active" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% else %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% endif %}
                   {%endfor%}
                 </ul>
                 
