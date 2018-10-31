@@ -1,41 +1,69 @@
 <html>
 <head>
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style-green.css' %}">
-    
+   <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         
 </head>
    
 <body>
     <div class="container">
-            <h2>Resume</h2>
-            
-            <ul class="nav nav-tabs">
-              {% for month in months %}
-              <li><a data-toggle="tab" href="#menu{{forloop.counter}}">{{month}}</a></li>
-              {%endfor%}
+        <nav class="blue darken-3">
+            <div class="nav-wrapper">
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/incomes">Incomes</a></li>
+                <li><a href="/outcomes">Outcomes</a></li>
+                <li><a href="/transfers">Transfers</a></li>
+                <li><a href="/budgets">Budgets</a></li>
+              </ul>
+            </div>
+          </nav>
+          <ul class="sidenav" id="mobile-demo">
+              <li><a href="/">Home</a></li>
+                  <li><a href="/incomes">Incomes</a></li>
+                  <li class="active"><a href="/outcomes">Outcomes</a></li>
+                  <li><a href="/transfers">Transfers</a></li>
+                  <li><a href="/budgets">Budgets</a></li>
             </ul>
-            <br>
-            <div class="tab-content">      
+
+            <div class="row">       
+                <div class="col s4 section"><h4>Resume</h4></div>
+                <div class="col s1 offset-s7"><h4><a class="waves-effect waves-light blue btn modal-trigger" href="#modal1">ADD</a></h4>
+                </div>    
+            </div>
+            <div class="row">
+                <ul class="tabs blue darken-3" >
+                  {% for month in months %}
+                    {%if forloop.counter == thismonth %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" class="active" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% else %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% endif %}
+                  {%endfor%}
+                </ul>
+
             {% for start,end,table,total,income,outcome in tables %}
 
-              <div id="menu{{forloop.counter}}" class="tab-pane fade">
-                    <div class="col-lg-12">
-                        <div class="info col-sm-1">Inicio</div>
-                        <div class="info2 col-sm-3">{{start}}</div>
-                        <div class="info col-sm-1">Fin</div>
-
-                        <div class="info2 col-sm-3">{{end}}</div>
-                        <div class="info col-sm-1">Hoy</div>
-                        <div class="info2 col-sm-3">{{today|date:"d \d\e F \d\e Y"}}</div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="col-sm-6">
-                            <table class="accountstable">
+              <div id="menu{{forloop.counter}}" class="col s12">
+                  <br><div class="row" style="padding-bottom:3%">
+                      <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Inicio</div>
+                      <div class="col s3">{{start}}</div>
+                      <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Fin</div>
+                      <div class="col s3">{{end}}</div>
+                      <div class="col s1 blue darken-4" style="color: rgba(255, 255, 255, 0.9);">Hoy</div>
+                      <div class="col s3">{{today|date:"d \d\e F \d\e Y"}}</div>
+                  </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <table class="highlight">
                                 <tr>
                                     <th style="background:white"></th>
                                     {%for account in accounts%}
@@ -52,7 +80,7 @@
                             </table>
                             <div class="info col-sm-6 col-sm-offset-3">Balance: {{total}} €</div>
                         </div>
-                    <div id="graph{{forloop.counter}}" class="col-sm-6">
+                    <div id="graph{{forloop.counter}}" class="col s6">
                     </div>
                     </div>
                     <div class="col-lg-12">
@@ -60,7 +88,7 @@
                     <script>
                             var pieColors = (function () {
                                 var colors = [],
-                                  base = '#439889',
+                                  base = '#039be5',
                                   i;
                                 for (i = 0; i < 10; i += 1) {
                                   colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
@@ -118,7 +146,17 @@
         </div>
           
 
-    
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $('.modal').modal();
+          });
+          $(document).ready(function(){
+            $('.tabs').tabs();
+          });
+          $(document).ready(function(){
+            $('.datepicker').datepicker();
+          });
+        </script>
 
 
 </body>

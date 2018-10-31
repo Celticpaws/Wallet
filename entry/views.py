@@ -59,7 +59,9 @@ def outcomes_resume(request):
     return render(request, 'outcomes.html', {'today':today, 'thismonth':thismonth, 'tables':tables,'months':months,'categories':categories,'days':days})
 
 def outcome_add(request):
-    return render(request, 'add-outcome.html', {})
+    categories = Category.objects.all()
+    accounts = Account.objects.all()
+    return render(request, 'add-outcome.html', {'categories':categories,'accounts':accounts})
 
 def incomes_resume(request):
     today = datetime.datetime.now()
