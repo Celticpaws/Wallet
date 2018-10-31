@@ -57,21 +57,26 @@
             </div>
             <div class="row">
               <div class="input-field col s6">
-                <input list="categories" id="category" class="validate">
-                <label for="category">Category</label>
-                <datalist id="categories">
-                  {%for c in categories%}
-                  <option id="{{c.id}}" value="{{c.name}}"></option>
-                  {%endfor%}
-                </datalist>
-              </div>
+                  <input list="categories" id="category" class="validate">
+                  <datalist id="categories">
+                      {%for c in categories%}
+                      <option value="{{c.id}}">{{c.name}}</option>
+                      {%endfor%}
+                  </datalist>
+                  <label for="category">Category</label>
+                </div>
               <div class="input-field col s6">
                 <input list="accounts" id="account" class="validate">
                 <datalist id="accounts">
-                  <option value="1">
+                    {%for c in accounts%}
+                    <option value="{{c.id}}">{{c.bank}}</option>
+                    {%endfor%}
                 </datalist>
                 <label for="account">Account</label>
               </div>
+              <button class="btn red waves-effect waves-light" type="submit" name="action">Submit
+                  <i class="material-icons right">send</i>
+                </button>
             </div>
           </form>     
            
@@ -89,7 +94,9 @@
   $(document).ready(function(){
     $('.datepicker').datepicker();
   });
-
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
 </script>
 
 </body>
