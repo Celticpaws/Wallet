@@ -30,14 +30,14 @@ def accounts_resume(request):
         total = sum(values[5])
         incomes = sum(values[1])
         outcomes = sum(values[2])
-        print(outcomes)
+        thismonth = today.month
         inc = incomes/(incomes+outcomes) if incomes+outcomes >0 else 0
         ouc = outcomes/(incomes+outcomes) if incomes+outcomes >0 else 0
         values = [a+b for a,b in zip([['Start'],['Income'],['Outcome'],['Transfer'],['SubTotal'],['Total']],values)]
 
         tables.append([start_date,end_date,values,round(total,2),inc*100,ouc*100])
         
-    return render(request, 'resume.html', {'today':today, 'accounts': accounts, 'tables':tables,'months':months})
+    return render(request, 'resume.html', {'today':today, 'thismonth':thismonth, 'accounts': accounts, 'tables':tables,'months':months,})
 
 def outcomes_resume(request):
     today = datetime.datetime.now()
