@@ -39,23 +39,22 @@ def accounts_resume(request):
         
     return render(request, 'resume.html', {'today':today, 'thismonth':thismonth, 'accounts': accounts, 'tables':tables,'months':months,})
 
-def outcomes_resume(request):
-    today = datetime.datetime.now()
+def outcomes_resume(request,pky,pkm):
+    today = datetime.date(pky,pkm,1)
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     tables = []
-    for i in range(1,13) :
-        start_date = datetime.date(today.year,i,1)
-        r = calendar.monthrange(today.year,i)
-        days = range(1,r[1])
-        end_date = datetime.date(today.year,i,r[1])
-        values = Outcome.objects.filter(date__range=[start_date, end_date])
-        total = values.aggregate(total=Coalesce(Sum('amount'), 0))['total']
-        categories = Category.objects.filter(father=None)
-        circle = category_graph(start_date,end_date,total)
-        incomes = total_month_income(start_date,end_date)
-        line = timeline_graph(start_date,r[1],incomes)
-        thismonth = today.month
-        tables.append([start_date,end_date,values,round(total,2),circle,line]) 
+    start_date = datetime.date(today.year,today.month,1)
+    r = calendar.monthrange(today.year,today.month)
+    days = range(1,r[1])
+    end_date = datetime.date(today.year,today.month,r[1])
+    values = Outcome.objects.filter(date__range=[start_date, end_date])
+    total = values.aggregate(total=Coalesce(Sum('amount'), 0))['total']
+    categories = Category.objects.filter(father=None)
+    circle = category_graph(start_date,end_date,total)
+    incomes = total_month_income(start_date,end_date)
+    line = timeline_graph(start_date,r[1],incomes)
+    thismonth = today.month
+    tables.append([start_date,end_date,values,round(total,2),circle,line]) 
     return render(request, 'outcomes.html', {'today':today, 'thismonth':thismonth, 'tables':tables,'months':months,'categories':categories,'days':days})
 
 def outcome_add(request):

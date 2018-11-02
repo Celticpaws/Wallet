@@ -43,16 +43,16 @@
                 <ul class="tabs red darken-3" >
                   {% for month in months %}
                     {%if forloop.counter == thismonth %}
-                      <li class="tab col s1"><a id="tab{{forloop.counter}}" class="active" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" target="_self" class="active" href="{% url 'outcome' pky=today.year pkm=forloop.counter%}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
                     {% else %}
-                      <li class="tab col s1"><a id="tab{{forloop.counter}}" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" target="_self" href="{% url 'outcome' pky=today.year pkm=forloop.counter%}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
                     {% endif %}
                   {%endfor%}
                 </ul>
                 
             {% for start,end,table,total,circles,seriesline in tables %}
 
-              <div id="menu{{forloop.counter}}" class="col s12">
+              <div id="{{forloop.counter}}" class="col s12">
                     <br><div class="row" style="padding-bottom:3%">
                         <div class="col s1 red darken-4 " style="color: rgba(255, 255, 255, 0.9);">Inicio</div>
                         <div class="col s3">{{start}}</div>
