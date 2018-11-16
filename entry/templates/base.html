@@ -1,0 +1,54 @@
+<html>
+<head>
+    {% load static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+   <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+       
+</head>
+   
+<body>
+    <div class="container">
+        <nav class="{{color}} darken-3">
+            <div class="nav-wrapper">
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li id="menu1"><a href="/{{today.year}}/{{today.month}}">Home</a></li>
+                <li id="menu2"><a href="/incomes">Incomes</a></li>
+                <li id="menu3"><a href="/outcomes/{{today.year}}/{{today.month}}">Outcomes</a></li>
+                <li id="menu4"><a href="/transfers">Transfers</a></li>
+                <li id="menu5"><a href="/budgets">Budgets</a></li>
+              </ul>
+            </div>
+          </nav>
+          <ul class="sidenav" id="mobile-demo">
+              <li><a href="/">Home</a></li>
+                  <li><a href="/incomes">Incomes</a></li>
+                  <li class="active"><a href="/outcomes">Outcomes</a></li>
+                  <li><a href="/transfers">Transfers</a></li>
+                  <li><a href="/budgets">Budgets</a></li>
+            </ul>
+    
+    {% block content%}
+    {% endblock %}
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('.modal').modal();
+    });
+    $(document).ready(function(){
+        $('.tabs').tabs();
+    });
+    $(document).ready(function(){
+        $('.datepicker').datepicker();
+    });
+    $('#menu{% block title %}{% endblock %}').addClass("active");
+        </script>
+
+</body>
+</html>
