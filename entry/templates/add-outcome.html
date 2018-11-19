@@ -3,18 +3,18 @@
 {% block title %}3{% endblock %}
 {% block content %}
         <div class="row">       
-            <div class="col s4 section"><h4>Add Outcome {{thismonth}}</h4></div>  
+            <div class="col m12 l4 section"><h4>Add Outcome {{thismonth}}</h4></div>  
         </div>
         <div class="row">
-          <form method='POST' class="col s12" action='outcome-add'>
+          <form method='POST' class="col s12 m12" action='outcome-add'>
             {% csrf_token %}
             
             <div class="row">
-              <div class="input-field col s6">
+              <div class="input-field col m12 l6">
                 {{form.date}}
                 {{form.date.label_tag}}
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col m12 l6">
                 {{form.amount}}
                 {{form.amount.label_tag}}
               </div>
@@ -26,11 +26,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s6">
+              <div class="input-field col m12 l6">
                   {{form.category}}
                   {{form.category.label_tag}}
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col m12 l6">
                   {{form.account}}
                   {{form.account.label_tag}}
               </div>
