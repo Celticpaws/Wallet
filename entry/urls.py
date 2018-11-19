@@ -7,4 +7,5 @@ urlpatterns = [
     path('incomes', views.incomes_resume, name='income'),
     path('transfers', views.transfers_resume, name='transfer'),
     path('outcome-add', views.outcome_add, name='outcome-add'),
+    path('income-add', views.income_add, name='income-add'),
 ]

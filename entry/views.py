@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import *
 from django.db.models import Avg, Count, Min, Sum
 import calendar
 from .methods import *
 import datetime
+from .forms import *
 # Create your views here.
 
 def accounts_resume(request,pky=datetime.datetime.now().year,pkm=datetime.datetime.now().month):
@@ -56,10 +57,41 @@ def outcomes_resume(request,pky=datetime.datetime.now().year,pkm=datetime.dateti
     tables.append([start_date,end_date,values,round(total,2),circle,line]) 
     return render(request, 'outcomes.html', {'color': 'red','today':today, 'thismonth':thismonth, 'tables':tables,'months':months,'categories':categories,'days':days})
 
+def income_add(request):
+    if request.method =="POST":
+        form = IncomeForm(request.POST)
+        form.is_valid()
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('income')
+        else:
+            print(form)
+            print(form.errors.as_data())
+    else:
+        form = IncomeForm()
+        print(form.fields)
+        categories = Category.objects.all()
+        accounts = Account.objects.all()
+    return render(request, 'add-income.html', {'form':form,'color': 'teal','categories':categories,'accounts':accounts})
+
 def outcome_add(request):
-    categories = Category.objects.all()
-    accounts = Account.objects.all()
-    return render(request, 'add-outcome.html', {'color': 'red','categories':categories,'accounts':accounts})
+    if request.method =="POST":
+        form = OutcomeForm(request.POST)
+        form.is_valid()
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('outcome',pky=datetime.datetime.now().year,pkm=datetime.datetime.now().month)
+        else:
+            print(form)
+            print(form.errors.as_data())
+    else:
+        form = OutcomeForm()
+        print(form.fields)
+        categories = Category.objects.all()
+        accounts = Account.objects.all()
+    return render(request, 'add-outcome.html', {'form':form,'color': 'red','categories':categories,'accounts':accounts})
 
 def incomes_resume(request):
     today = datetime.datetime.now()
