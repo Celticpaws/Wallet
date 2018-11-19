@@ -18,11 +18,11 @@
             <div class="nav-wrapper">
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li id="men1"><a href="/{{today.year}}/{{today.month}}">Home</a></li>
-                <li id="men2"><a href="/incomes">Incomes</a></li>
-                <li id="men3"><a href="/outcomes/{{today.year}}/{{today.month}}">Outcomes</a></li>
-                <li id="men4"><a href="/transfers">Transfers</a></li>
-                <li id="men5"><a href="/budgets">Budgets</a></li>
+                <li id="menu1"><a href="/{{today.year}}/{{today.month}}">Home</a></li>
+                <li id="menu2"><a href="/incomes">Incomes</a></li>
+                <li id="menu3"><a href="/outcomes/{{today.year}}/{{today.month}}">Outcomes</a></li>
+                <li id="menu4"><a href="/transfers">Transfers</a></li>
+                <li id="menu5"><a href="/budgets">Budgets</a></li>
               </ul>
             </div>
           </nav>
@@ -54,7 +54,7 @@
         $('.sidenav').sidenav();
     });
        
-    $('#men{% block title %}{% endblock %}').addClass("active");
+    $('#menu{% block title %}{% endblock %}').addClass("active");
         </script>
 
 </body>

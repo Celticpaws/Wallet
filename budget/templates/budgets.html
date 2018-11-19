@@ -1,126 +1,80 @@
-<html>
-<head>
-        {% load static %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-        <script src="https://code.highcharts.com/highcharts.src.js"></script>
-       <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-           
-</head>
-   
-<body>
-    <div class="container">
-            <nav class="blue darken-3">
-                    <div class="nav-wrapper">
-                        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                      <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/incomes">Incomes</a></li>
-                        <li><a href="/outcomes">Outcomes</a></li>
-                        <li><a href="/transfers">Transfers</a></li>
-                        <li class="active"><a href="/budgets">Budgets</a></li>
-                      </ul>
-                    </div>
-                  </nav>
-                  <ul class="sidenav" id="mobile-demo">
-                        <li><a href="/">Home</a></li>
-                            <li><a href="/incomes">Incomes</a></li>
-                            <li class="active"><a href="/outcomes">Outcomes</a></li>
-                            <li><a href="/transfers">Transfers</a></li>
-                            <li><a href="/budgets">Budgets</a></li>
-                      </ul>
-        
-            <div class="row">       
-                <div class="col s4 section"><h4>Budget</h4></div>
-                <div class="col s1 offset-s7"><h4><a class="waves-effect waves-light blue btn modal-trigger" href="#modal1">ADD</a></h4>
-                </div>    
+{% extends 'base.html' %}
+
+{% block title %}5{% endblock %}
+{% block content %}
+
+        <div class="row">       
+            <div class="col s4 section"><h4>Budget</h4></div>
+            <div class="col s1 offset-s7"><h4><a class="waves-effect waves-light blue btn modal-trigger" href="#modal1">ADD</a></h4>
             </div>    
-            <div class="row">
-                    <ul class="tabs blue darken-3" >
-                      {% for month in months %}
-                        {%if forloop.counter == thismonth %}
-                          <li class="tab col s1"><a id="tab{{forloop.counter}}" class="active" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
-                        {% else %}
-                          <li class="tab col s1"><a id="tab{{forloop.counter}}" href="#menu{{forloop.counter}}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
-                        {% endif %}
-                      {%endfor%}
-                    </ul>
+        </div>    
+        <div class="row">
+                <ul class="tabs blue darken-3" >
+                    {% for month in months %}
+                    {%if forloop.counter == thismonth %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" target="_self" class="active" href="{% url 'budgets' pky=today.year pkm=forloop.counter%}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% else %}
+                      <li class="tab col s1"><a id="tab{{forloop.counter}}" target="_self" href="{% url 'budgets' pky=today.year pkm=forloop.counter%}" style="color: rgba(255, 255, 255, 0.9);">{{month}}</a></li>
+                    {% endif %}
+                    {%endfor%}
+                </ul>
 
-            {% for start,end,table,total in tables %}
+        {% for start,end,table,total in tables %}
 
-            <div id="menu{{forloop.counter}}" class="col s12">
-                    <br><div class="row" style="padding-bottom:3%">
-                        <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Inicio</div>
-                        <div class="col s3">{{start}}</div>
-                        <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Fin</div>
-                        <div class="col s3">{{end}}</div>
-                        <div class="col s1 blue darken-4" style="color: rgba(255, 255, 255, 0.9);">Hoy</div>
-                        <div class="col s3">{{today|date:"d \d\e F \d\e Y"}}</div>
-                    </div>
+        <div class="col s12">
+                <br><div class="row" style="padding-bottom:3%">
+                    <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Inicio</div>
+                    <div class="col s3">{{start}}</div>
+                    <div class="col s1 blue darken-4 " style="color: rgba(255, 255, 255, 0.9);">Fin</div>
+                    <div class="col s3">{{end}}</div>
+                    <div class="col s1 blue darken-4" style="color: rgba(255, 255, 255, 0.9);">Hoy</div>
+                    <div class="col s3">{{today|date:"d \d\e F \d\e Y"}}</div>
+                </div>
+                <div class="row">
+                    <div id="circle{{forloop.counter}}" class="col-sm-6"></div>
+                    <div id="line{{forloop.counter}}" class="col-sm-6"></div>
+                </div>
+                <div class="row">
                     <div class="row">
-                        <div id="circle{{forloop.counter}}" class="col-sm-6"></div>
-                        <div id="line{{forloop.counter}}" class="col-sm-6"></div>
-                    </div>
-                    <div class="row">
-                        <div class="row">
-                                <table class="highlight">
-                                    <tr >
-                                        <th> Categoria </th>
-                                        <th> Monto </th>
-                                        <th> % </th>
-                                        <th> Restante </th>
-                                        <th> Gastado </th>
-                                        <th> Barra </th>
+                            <table class="highlight">
+                                <tr >
+                                    <th> Categoria </th>
+                                    <th> Monto </th>
+                                    <th> % </th>
+                                    <th> Restante </th>
+                                    <th> Gastado </th>
+                                    <th> Barra </th>
+                                </tr>
+                                {%for values,por,rest,spend,gr in table%}
+                                    <tr>
+                                        <td> {{values.category}}</td>
+                                        <td style="text-align:right"> {{values.amount}}</td>
+                                        <td style="text-align:right"> {{por}} %</td>
+                                        {%if rest < 0 %}
+                                            <td style="text-align:right;color:red"> {{rest}} €</td>
+                                            <td style="text-align:right;color:red"> {{spend}} €</td>
+                                        {% else %}
+                                            <td style="text-align:right"> {{rest}} €</td>
+                                            <td style="text-align:right"> {{spend}} €</td>
+                                        {% endif %}    
+                                        <td style="text-align:center"> 
+                                            <div class="badge" style="border:1px solid #0D47A1">
+                                                {%if gr > 100 %}
+                                                <div class="red" style="height:24px;width:100%">{{gr|floatformat:'0'}}%</div>
+                                                {% else %}
+                                                <div class="blue" style="height:24px;width:{{gr|floatformat:'0'}}%">{{gr|floatformat:'0'}}%</div>
+                                                {% endif %}
+                                            </div>  
+                                        </td>
                                     </tr>
-                                    {%for values,por,rest,spend,gr in table%}
-                                        <tr>
-                                            <td> {{values.category}}</td>
-                                            <td style="text-align:right"> {{values.amount}}</td>
-                                            <td style="text-align:right"> {{por}} %</td>
-                                            {%if rest < 0 %}
-                                                <td style="text-align:right;color:red"> {{rest}} €</td>
-                                                <td style="text-align:right;color:red"> {{spend}} €</td>
-                                            {% else %}
-                                                <td style="text-align:right"> {{rest}} €</td>
-                                                <td style="text-align:right"> {{spend}} €</td>
-                                            {% endif %}    
-                                            <td style="text-align:center"> 
-                                                <div class="badge" style="border:1px solid #0D47A1">
-                                                    {%if gr > 100 %}
-                                                    <div class="red" style="height:24px;width:100%">{{gr|floatformat:'0'}}%</div>
-                                                    {% else %}
-                                                    <div class="blue" style="height:24px;width:{{gr|floatformat:'0'}}%">{{gr|floatformat:'0'}}%</div>
-                                                    {% endif %}
-                                                </div>  
-                                            </td>
-                                        </tr>
-                                    {%endfor%}
-                                </table>
-                                <div class="center blue col-s6">Gastos: {{total}} €</div>
-                            </div>
-                    </div>
-              </div>
-            {%endfor%}
+                                {%endfor%}
+                            </table>
+                            <div class="center blue col-s6">Gastos: {{total}} €</div>
+                        </div>
+                </div>
             </div>
+        {%endfor%}
         </div>
+    </div>
           
-
-    
-        <script type="text/javascript">
-            $(document).ready(function(){
-              $('.modal').modal();
-            });
-            $(document).ready(function(){
-              $('.tabs').tabs();
-            });
-            $(document).ready(function(){
-              $('.datepicker').datepicker();
-            });
-          </script>
-
-</body>
-</html>
+{% endblock %}
