@@ -42,3 +42,24 @@ def budget_resume(request,pky=datetime.datetime.now().year,pkm=datetime.datetime
     thismonth = start_date.month
     print(thismonth)
     return render(request, 'budgets.html', {'color':'blue', 'today':today,'thismonth':thismonth, 'tables':tables,'months':months})
+
+def graphs_resume(request,pky=datetime.datetime.now().year,pkm=datetime.datetime.now().month):
+    today = datetime.datetime.now()
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    categories = Category.objects.all()
+    start_date = datetime.date(pky,1,1)
+    end_date = datetime.date(pky,12,31)
+    thismonth = start_date.month
+    tables=[]
+    for cat in categories:
+        budgets=[]
+        outcomes=[]
+        for i in range(1,12):
+            b = Budget.objects.filter(date__year=pky,date__month=i,category=cat)
+            o = Outcome.objects.filter(date__year=pky,date__month=i,category=cat).aggregate(Sum('amount'))['amount__sum']
+            budgets.append(float(b[0].amount)) if b.count() > 0 else budgets.append(0)
+            outcomes.append(float(o)) if o else outcomes.append(0)
+        tables.append([cat,budgets,outcomes])
+    print(tables)
+        
+    return render(request, 'graphics.html', {'color':'blue', 'today':today,'thismonth':thismonth,'thisyear':pky, 'tables':tables,'months':months})

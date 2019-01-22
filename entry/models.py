@@ -2,12 +2,12 @@ from django.db import models
 import json
 from django.core.serializers import serialize
 from asset.models import *
-
+from django.utils import timezone
 import datetime
 # Create your models here.
 
 class Income(models.Model):
-    date = models.DateField(default=datetime.datetime.now())
+    date = models.DateField(default=timezone.now)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=100, blank=True, null=True)
     payed = models.BooleanField(default=False)
@@ -26,7 +26,7 @@ class Income(models.Model):
         db_table = 'incomes'
 
 class Outcome(models.Model):
-    date = models.DateField(default=datetime.datetime.now())
+    date = models.DateField(default=timezone.now)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=100, blank=True, null=True)
     category = models.ForeignKey('asset.Category', blank=False, null=None, default=None, on_delete=models.CASCADE)
@@ -45,7 +45,7 @@ class Outcome(models.Model):
         db_table = 'outcomes'
 
 class Transfer(models.Model):
-    date = models.DateField(default=datetime.datetime.now())
+    date = models.DateField(default=timezone.now)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=100, blank=True, null=True)
     from_account = models.ForeignKey('asset.Account', blank=False, null=None, default=None, related_name="from_account", on_delete=models.CASCADE)
